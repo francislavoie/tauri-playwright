@@ -130,11 +130,17 @@ export function createTauriTest(config: TauriTestConfig) {
 
           tauriPage = new TauriPage(client);
 
-          // Reset app state by reloading the page before each test
           if (config.devUrl) {
-            await tauriPage.evaluate(`window.location.href = ${JSON.stringify(config.devUrl)}`);
-            // Wait for the page to reload and the polling bridge to reconnect
-            await new Promise((r) => setTimeout(r, 500));
+            // Reset app state by reloading the page before each test. Skipped
+            // when reloadBeforeEach is false: on apps whose reload reboots a
+            // heavy runtime, the readiness poll below races that reboot and an
+            // eval issued mid-navigation never gets its pw_result, hanging the
+            // test until the plugin's 30s eval timeout.
+            if (config.reloadBeforeEach !== false) {
+              await tauriPage.evaluate(`window.location.href = ${JSON.stringify(config.devUrl)}`);
+              // Wait for the page to reload and the polling bridge to reconnect
+              await new Promise((r) => setTimeout(r, 500));
+            }
             await tauriPage.waitForFunction(
               'document.readyState === "complete" && !!window.__PW_ACTIVE__',
             );
