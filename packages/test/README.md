@@ -33,7 +33,7 @@ This does not start a test runner or reload the webview, so it inspects the
 app's current state:
 
 ```ts
-import { connectTauri } from '@srsholmes/tauri-playwright';
+import { connectTauri } from '@francislavoie/tauri-playwright';
 
 const connection = await connectTauri();
 try {
@@ -57,10 +57,10 @@ The app must grant the plugin's `playwright:default` permission to its webview.
 ```toml
 # src-tauri/Cargo.toml
 [features]
-e2e-testing = ["tauri-plugin-playwright"]
+e2e-testing = ["dep:tauri-plugin-playwright"]
 
 [dependencies]
-tauri-plugin-playwright = { version = "0.1", optional = true }
+tauri-plugin-playwright = { git = "https://github.com/francislavoie/tauri-playwright", rev = "29998789d6a75710eb2975b25eaf41dcf5b1a61f", optional = true }
 ```
 
 ```rust
@@ -81,7 +81,7 @@ pub fn run() {
 ### 2. Install the npm package
 
 ```bash
-pnpm add -D @srsholmes/tauri-playwright @playwright/test
+pnpm add -D @francislavoie/tauri-playwright @playwright/test
 npx playwright install chromium
 ```
 
@@ -89,7 +89,7 @@ npx playwright install chromium
 
 ```ts
 // e2e/fixtures.ts
-import { createTauriTest } from '@srsholmes/tauri-playwright';
+import { createTauriTest } from '@francislavoie/tauri-playwright';
 
 export const { test, expect } = createTauriTest({
   devUrl: 'http://localhost:1420',
@@ -423,7 +423,7 @@ createTauriTest({
 Assert which IPC commands were called:
 
 ```ts
-import { getCapturedInvokes, clearCapturedInvokes } from '@srsholmes/tauri-playwright';
+import { getCapturedInvokes, clearCapturedInvokes } from '@francislavoie/tauri-playwright';
 
 const calls = await getCapturedInvokes(tauriPage);
 expect(calls).toContainEqual(

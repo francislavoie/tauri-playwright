@@ -33,10 +33,10 @@ Three testing modes from the same test files:
 ```toml
 # src-tauri/Cargo.toml
 [features]
-e2e-testing = ["tauri-plugin-playwright"]
+e2e-testing = ["dep:tauri-plugin-playwright"]
 
 [dependencies]
-tauri-plugin-playwright = { version = "0.1", optional = true }
+tauri-plugin-playwright = { git = "https://github.com/francislavoie/tauri-playwright", rev = "29998789d6a75710eb2975b25eaf41dcf5b1a61f", optional = true }
 ```
 
 ```rust
@@ -57,7 +57,7 @@ pub fn run() {
 ### 2. Install the npm package
 
 ```bash
-pnpm add -D @srsholmes/tauri-playwright @playwright/test
+pnpm add -D @francislavoie/tauri-playwright @playwright/test
 npx playwright install chromium
 ```
 
@@ -65,7 +65,7 @@ npx playwright install chromium
 
 ```ts
 // e2e/fixtures.ts
-import { createTauriTest } from '@srsholmes/tauri-playwright';
+import { createTauriTest } from '@francislavoie/tauri-playwright';
 
 export const { test, expect } = createTauriTest({
   devUrl: 'http://localhost:1420',
@@ -425,7 +425,7 @@ JSON-serialized, so they must be plain data (no functions or class instances).
 #### Asserting IPC calls
 
 ```ts
-import { getCapturedInvokes, clearCapturedInvokes } from '@srsholmes/tauri-playwright';
+import { getCapturedInvokes, clearCapturedInvokes } from '@francislavoie/tauri-playwright';
 
 const calls = await getCapturedInvokes(tauriPage);
 expect(calls).toContainEqual(

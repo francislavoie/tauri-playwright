@@ -1,4 +1,4 @@
-# @srsholmes/tauri-playwright
+# @francislavoie/tauri-playwright
 
 ## 0.4.1
 
