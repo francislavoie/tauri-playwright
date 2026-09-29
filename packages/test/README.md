@@ -2,6 +2,10 @@
 
 Playwright E2E testing for Tauri desktop apps. Controls the real native webview (WKWebView, WebView2, WebKitGTK) with a Playwright-compatible API — auto-waiting, locator assertions, semantic selectors, network mocking, native screenshots, and video recording.
 
+## About this fork
+
+This is a fork of [Simon Holmes's tauri-playwright](https://github.com/srsholmes/tauri-playwright). Credit for the original project goes to Simon and its contributors; their MIT license and copyright notice are retained. We forked it while [the upstream Windows connection fix](https://github.com/srsholmes/tauri-playwright/pull/13) awaits merging, so we can connect reliably to WebView2 and inspect an already-running Tauri app with `connectTauri()` without starting a test run or reloading the app. We intend to keep tracking upstream as this work develops.
+
 ## The Problem
 
 Tauri apps use system webviews instead of Chromium. Playwright requires Chrome DevTools Protocol (CDP), but only WebView2 (Windows) supports it. **Standard Playwright integration is impossible on macOS and Linux.**
@@ -21,7 +25,7 @@ Three testing modes from the same test files:
 │  Playwright       │◄────────────►│  tauri-plugin-playwright          │
 │  test runner      │              │  (Rust, embedded in your app)     │
 │                   │              │                                   │
-│  @srsholmes/      │              │  Socket server → JS injection     │
+│  @francislavoie/ │              │  Socket server → JS injection     │
 │  tauri-playwright │              │  HTTP polling  ← JS results       │
 └──────────────────┘              └──────────────────────────────────┘
 ```
