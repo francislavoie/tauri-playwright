@@ -1,4 +1,4 @@
-import { createTauriTest } from '@srsholmes/tauri-playwright';
+import { createTauriTest } from '@francislavoie/tauri-playwright';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

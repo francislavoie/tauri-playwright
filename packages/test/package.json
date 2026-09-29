@@ -1,6 +1,6 @@
 {
-  "name": "@srsholmes/tauri-playwright",
-  "version": "0.4.1",
+  "name": "@francislavoie/tauri-playwright",
+  "version": "0.4.2",
   "description": "Playwright E2E testing for Tauri desktop apps",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --outDir dist",
+    "prepack": "npm run build",
     "dev": "tsup src/index.ts --format esm --dts --outDir dist --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -42,10 +43,14 @@
     "webview"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/srsholmes/tauri-playwright",
+  "homepage": "https://github.com/francislavoie/tauri-playwright",
   "repository": {
     "type": "git",
-    "url": "https://github.com/srsholmes/tauri-playwright"
+    "url": "git+https://github.com/francislavoie/tauri-playwright.git",
+    "directory": "packages/test"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
     "node": ">=18"

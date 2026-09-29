@@ -2,6 +2,10 @@
 
 Playwright E2E testing for Tauri desktop apps. Controls the real native webview (WKWebView, WebView2, WebKitGTK) with a Playwright-compatible API — auto-waiting, locator assertions, semantic selectors, network mocking, native screenshots, and video recording.
 
+## About this fork
+
+This is a fork of [Simon Holmes's tauri-playwright](https://github.com/srsholmes/tauri-playwright). Credit for the original project goes to Simon and its contributors; their MIT license and copyright notice are retained. We forked it while [the upstream Windows connection fix](https://github.com/srsholmes/tauri-playwright/pull/13) awaits merging, so we can connect reliably to WebView2 and inspect an already-running Tauri app with `connectTauri()` without starting a test run or reloading the app. We intend to keep tracking upstream as this work develops.
+
 ## The Problem
 
 Tauri apps use system webviews instead of Chromium. Playwright requires Chrome DevTools Protocol (CDP), but only WebView2 (Windows) supports it. **Standard Playwright integration is impossible on macOS and Linux.**
@@ -21,7 +25,7 @@ Three testing modes from the same test files:
 │  Playwright       │◄────────────►│  tauri-plugin-playwright          │
 │  test runner      │              │  (Rust, embedded in your app)     │
 │                   │              │                                   │
-│  @srsholmes/      │              │  Socket server → JS injection     │
+│  @francislavoie/ │              │  Socket server → JS injection     │
 │  tauri-playwright │              │  HTTP polling  ← JS results       │
 └──────────────────┘              └──────────────────────────────────┘
 ```
@@ -33,7 +37,7 @@ This does not start a test runner or reload the webview, so it inspects the
 app's current state:
 
 ```ts
-import { connectTauri } from '@srsholmes/tauri-playwright';
+import { connectTauri } from '@francislavoie/tauri-playwright';
 
 const connection = await connectTauri();
 try {
@@ -57,10 +61,10 @@ The app must grant the plugin's `playwright:default` permission to its webview.
 ```toml
 # src-tauri/Cargo.toml
 [features]
-e2e-testing = ["tauri-plugin-playwright"]
+e2e-testing = ["dep:tauri-plugin-playwright"]
 
 [dependencies]
-tauri-plugin-playwright = { version = "0.1", optional = true }
+tauri-plugin-playwright = { git = "https://github.com/francislavoie/tauri-playwright", rev = "29998789d6a75710eb2975b25eaf41dcf5b1a61f", optional = true }
 ```
 
 ```rust
@@ -81,7 +85,7 @@ pub fn run() {
 ### 2. Install the npm package
 
 ```bash
-pnpm add -D @srsholmes/tauri-playwright @playwright/test
+pnpm add -D @francislavoie/tauri-playwright @playwright/test
 npx playwright install chromium
 ```
 
@@ -89,7 +93,7 @@ npx playwright install chromium
 
 ```ts
 // e2e/fixtures.ts
-import { createTauriTest } from '@srsholmes/tauri-playwright';
+import { createTauriTest } from '@francislavoie/tauri-playwright';
 
 export const { test, expect } = createTauriTest({
   devUrl: 'http://localhost:1420',
@@ -423,7 +427,7 @@ createTauriTest({
 Assert which IPC commands were called:
 
 ```ts
-import { getCapturedInvokes, clearCapturedInvokes } from '@srsholmes/tauri-playwright';
+import { getCapturedInvokes, clearCapturedInvokes } from '@francislavoie/tauri-playwright';
 
 const calls = await getCapturedInvokes(tauriPage);
 expect(calls).toContainEqual(
