@@ -574,11 +574,12 @@ export class TauriPage {
       } catch (err) {
         const msg = String(err);
         if (msg.includes('invalid command')) {
-          throw new Error(
-            `waitForWindow: plugin does not support list_windows — upgrade tauri-plugin-playwright to >=0.3.0 (${msg})`,
+          throw Object.assign(
+            new Error(`waitForWindow: plugin does not support list_windows — upgrade tauri-plugin-playwright to >=0.3.0 (${msg})`),
+            { cause: err },
           );
         }
-        throw new Error(`waitForWindow: list_windows failed — ${msg}`);
+        throw Object.assign(new Error(`waitForWindow: list_windows failed — ${msg}`), { cause: err });
       }
       const match = windows.find(predicate);
       if (match) return this.window(match.label);

@@ -26,6 +26,30 @@ Three testing modes from the same test files:
 └──────────────────┘              └──────────────────────────────────┘
 ```
 
+## Interactive connection to a running app
+
+Launch the app with the Rust plugin enabled, then connect from a Node script.
+This does not start a test runner or reload the webview, so it inspects the
+app's current state:
+
+```ts
+import { connectTauri } from '@srsholmes/tauri-playwright';
+
+const connection = await connectTauri();
+try {
+  console.log(await connection.page.title());
+  console.log(await connection.page.locator('body').innerText());
+  // await connection.page.click('button');
+} finally {
+  connection.close();
+}
+```
+
+On Windows, the connection uses `127.0.0.1:6274` by default. Set
+`TAURI_PW_TCP_PORT` or pass `{ tcpPort }` if the app uses another port. On Unix,
+it uses `/tmp/tauri-playwright.sock` by default; pass `{ socketPath }` to override.
+The app must grant the plugin's `playwright:default` permission to its webview.
+
 ## Quick Start
 
 ### 1. Add the Rust plugin to your Tauri app
