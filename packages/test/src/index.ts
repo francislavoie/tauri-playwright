@@ -1,5 +1,7 @@
 // Core fixture
 export { createTauriTest } from './fixture.js';
+export { connectTauri } from './connect.js';
+export type { TauriConnection, TauriConnectionOptions } from './connect.js';
 export { tauriExpect } from './expect.js';
 
 // Test helpers (browser mode)
